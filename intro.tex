@@ -1,0 +1,61 @@
+Parallel and distributed computing (PDC) terms such as multi-core processing,
+GPU processing, big data, data-intensive computting, etc have become the norms
+ in aspects of IT across academic and industrial areas. It is critical that
+  college graduates are properly introduced to PDC core concepts and
+technologiesfor their future careers. It is typical for PDC to be primarily
+taught as a single course within the entire undergraduate CS curriculum while
+having some PDC concepts embedded in other courses
+\cite{wolffe2009teaching,butler1988introducing}.
+
+The existing body of PDC knowledge spans across four different areas: Data
+Structures and Algorithm, Software Design, Software Environments, and Hardware
+\cite{brown2010strategies}. This leads to an increase in the number of
+computing tools and platforms that need to be used to teach the corresponding
+PDC concepts. The relevancy of including various technologies in the curriculum
+is clear as PDC begins to move beyond the traditional high performance computing
+concepts and into the areas of data-intensive computing, big data analytics, and
+ large-scale streaming systems. The students are faced with a significant
+ challenge to balance between learning both new PDC concepts and the
+accompanying computing platforms.
+
+In this paper, we describe the development of an educational approach to teach
+various PDC concepts using a common computing platform based on Python. Our
+approach and the accompanying teaching platform will offer the following
+advantages:
+
+\begin{itemize}
+  \item The approach facilitates the delivery of most common PDC areas such as
+   high performance computing, data-intensive computing, in-memory distributed
+    computing, and GPU-based computing. These areas are originally designed for different computing platforms using different languages. The corresponding
+    libraries in Python that can be leveraged to teach these areas are shown in
+    Table \ref{tab:summary}.
+  \item Python is a user-friendly introductory programming language with a low
+  barrier of entry to new users. It is also well supported and works across
+  different operating systems (Linux, MacOS, and Windows).
+  \item Python libraries to support PDC are highly unified and well-defined by
+  the open source community. In many cases, the performance of these libraries
+  are not as good as the original. On the other hand, it is more important for
+  students to spend more time understanding PDC concepts and less time on the
+  technical and syntax aspects of specific tools and languages, even if they provide the optimal performance.
+\end{itemize}
+
+\begin{table*}
+\caption{PDC Areas, their traditional platform/language for educational purpose, and the new corresponding Python-platform/libraries}
+\label{tab:summary}
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+Area & Typical platform/language & Python-based equivalent \\
+\hline
+High Performance Computing & MPI/C & py4MPI \\
+\hline
+Data-Intensive Computing and Big Data  & Hadoop MapReduce/Java & Python \\
+\hline
+In-memory Distributed Computing & Spark/Scala & Spark/pyspark \\
+\hline
+GPU-based Computing & ... & ... \\
+\hline
+\end{tabular}
+\end{table*}
+
+The remainder of this paper is organized as follows. Section \ref{sec:development} describes in detail the development of our approach and the accompanying computing platform, and how it will be used to facilitate the teaching of the four PDC areas mentioned in Table \ref{tab:summary}. Section \ref{sec:prelim} describes the preliminary responses from students as we utilize the platform to teach a one-week REU-site boot-camp workshop for data-intensive computing. Section \ref{sec:conclusion} concludes the paper and discusses future work.

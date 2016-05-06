@@ -1,0 +1,77 @@
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+
+\usepackage{amsmath,amsfonts,amssymb,graphicx,cite,rotating}
+\usepackage{multirow}
+\usepackage{subfig}
+\usepackage{dblfloatfix}
+
+\begin{document}
+
+\title{Python: A Promising Common Platform for Parallel and Distributed Computing Education}
+
+\author{\IEEEauthorblockN{Linh B. Ngo}
+\IEEEauthorblockA{
+School of Computing\\
+Clemson University\\
+Clemson, South Carolina\\
+lngo@clemson.edu}
+\IEEEauthorblockN{Edward B. Duffy}
+\IEEEauthorblockA{
+ Clemson Computing and Information Technology\\
+ Clemson University\\
+ Clemson, South Carolina\\
+ eduffy@clemson.edu}
+\and
+\IEEEauthorblockN{Amy W. Apon}
+\IEEEauthorblockA{
+School of Computing\\
+Clemson University\\
+Clemson, South Carolina\\
+aapon@clemson.edu}
+}
+
+\maketitle
+\begin{abstract}
+
+% This paper presents the development of a Hadoop MapReduce module that has been taught in a course in distributed computing to upper undergraduate computer science students at Clemson University. The paper describes our teaching experiences and the feedback from the students over several semesters that have helped to shape the course. We provide suggested best practices for lecture materials, the computing platform, and the teaching methods. In addition, the computing platform and teaching methods can be extended to accommodate emerging technologies and modules for related courses.
+
+\end{abstract}
+
+\begin{IEEEkeywords}MPI; MapReduce; Spark; CUDA; Python; distributed systems; parallel computing education
+\end{IEEEkeywords}
+
+\section{Introduction}
+\input{intro}
+
+\section{A Common Python Platform for Parallel and Distributed Computing Education}
+\label{sec:development}
+
+\subsection{Computing Environment}
+\input{environment}
+
+\subsection{Python for MPI}
+\input{pythonMPI}
+
+\subsection{Python for Hadoop MapReduce}
+\input{pythonMR}
+
+\subsection{Python for Apache Spark}
+\input{pythonSpark}
+
+\subsection{Python for CUDA}
+\input{pythonCUDA}
+
+\section{Preliminary Results}
+\label{sec:prelim}
+\input{preliminary}
+
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+\input{conclusion}
+
+\section{Acknowledgments}
+% We are grateful for the support from NSF MRI Award \#1228312 and NSF CI-SEEDS Award \#1212680. We would like to acknowledge the assistance from Randy Martin and Corey Ferrier, Clemson Computing and Information Technology, in setting up and maintaining the dedicated Hadoop cluster, and other assistance from Michael E. Payne, Jason Anderson, and Pengfei Xuan.
+\bibliographystyle{IEEEtran}
+\bibliography{citations}
+
+\end{document}

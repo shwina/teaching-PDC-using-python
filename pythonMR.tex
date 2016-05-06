@@ -1,0 +1,121 @@
+% The target for the integration of Hadoop MapReduce is a course on the topic of distributed computing. The course is taught in a class format that is one hour and fifteen minutes of lecture twice a week. While this is a required junior-level course, most students in the class wait until the first or second semester of their senior year before taking the course. Typically, the enrollment of the class ranges between 35 and 40 students. The School of Computing at Clemson University maintains a computing cluster that serves as both distributed network lab resource and general purpose lab. The queuing model permits a student to use a compute node interactively while another student's job runs in the background. Clemson University also maintains a centralized supercomputer with more than 2000 compute nodes. The supercomputer uses the typical compute nodes/parallel storage setup, as shown in Figure \ref{fig:academiccluster}(a). The students are allowed to use this supercomputer for their course work, but their jobs can be preempted from the system by higher priority research jobs asking for more computational resources. The supercomputer is upgraded regularly with a typical system utilization rate around 90\%.
+%
+% We first taught the Hadoop MapReduce module in Fall 2012. Since then, the Hadoop MapReduce lecture materials and tools have been taught in three standard full semesters (Fall 2012, Spring 2013, and Fall 2013) and one four-hour training session for undergraduate students who participated in the summer 2013 Research Experiences for Undergraduates (REU) program \cite{ClemsonREU:2013}.
+%
+% \subsection{Version 1, Fall 2012}
+% In Fall 2012, the first sixteen class lectures were spent on parallel programming concepts in MPI and shared memory programming while the last five lectures of the semester were spent on MapReduce. The lectures for Hadoop MapReduce module were arranged in the following order: one lecture on basic MapReduce concepts, one in-class lab, one lecture on HDFS, a second in-class lab, and one final lecture on advanced MapReduce optimization concepts. The three Hadoop MapReduce lectures follow the schedule from \cite{INFM718}. There were two assignments for the module. The first assignment reinforced concepts from the in-class lab, using a slight modification of the WordCount as a programming question (find the word with highest count in the complete Shakespeare collection). The second assignment asked the students to analyze the 171GB of a Google Data Center's system log \cite{clusterdata:Wilkes2011} and find the computing job with largest number of task resubmissions.
+%
+% Setting up a dedicated Hadoop platform for educational purposes is challenging \cite{rabkin:reiss:katz:patterson:2012,moody:ngo:duffy:apon:2013,brown:2009}, partly due to the differences in hardware architectures as shown in Figure \ref{fig:academiccluster}. There are four typical approaches in setting up a computing platform for teaching Hadoop MapReduce:
+% \begin{itemize}
+%   \item An interface for students to work on the MapReduce parallel programming model is provided that hides other elements of the Hadoop MapReduce ecosystem. An example is the WebMapReduce tool \cite{garrity:yates:brown:shoop:2011}.
+%   \item The students execute their work on a dedicated shared Hadoop cluster with individual user accounts \cite{kimball:michels-slettvet:bisciglia:2008}.
+%   \item The platform is a dedicated Linux cluster that supports virtualization. Hadoop/MapReduce is installed and configured on virtual machines, and students start up their individual virtual Hadoop clusters on a subset of nodes from the cluster \cite{brown:2009,albrecht:2009}.
+%   \item Access to cloud resources are provided so that students can set up their own Hadoop clusters on the cloud \cite{rabkin:reiss:katz:patterson:2012}.
+% \end{itemize}
+%
+% We provided two Hadoop setups for the students. The first setup was a pseudo-distributed Hadoop setup inside a single virtual machine (VM). The second setup was a dedicated 8-node Hadoop cluster. Although Hadoop was not installed on the main supercomputer, the system administrators agreed to detach eight nodes from the supercomputer for us to set up this dedicated Hadoop cluster and to provide unlimited access to students enrolled in the class. Each node had dual 8-core CPUs, 64GB RAM, and 850GB HDD. The Google Trace Data was pre-loaded on the cluster.
+%
+% Both of these setups turned out to be problematic for the class. In the first setup, since the VM was located on the supercomputer, the students needed to establish an SSH tunnel connection with the VM in order to access the virtual OS's GUI for Hadoop's web interfaces. A significant amount of time was spent by the students getting the VMs up and running. The students' attempts to display GUI visualization of an entire operating system over their laptops' wireless connections only further complicated the problem. The second setup started out well during the in-class lab. Students were able to log in and execute the WordCount example on the dedicated Hadoop cluster. However, significant problems occurred near the due date for the second Hadoop MapReduce assignment. A large number of students waited until the last day before starting on the assignment. As a result, the Hadoop cluster began to slow down significantly. In addition, some of job submissions contained run time errors that created memory leaks on the Java heap memory and consequently crashed the task tracker and data node daemons. When the Hadoop cluster was restarted, it typically took at least fifteen minutes for all the Data Nodes to check for data integrity and report back to the Name Node. However, as soon as the cluster was up again, students continued to resubmit their jobs, hence creating additional under-replicated data blocks. Without prior experience in administrating Hadoop cluster, we ended up with a corrupted Hadoop cluster that stopped all the new jobs. By the end of the semester, only about one third of the students who had begun their work long before the deadline were able to complete the second assignment.
+%
+% After the first semester, we concluded that maintaining a small centralized Hadoop cluster for a class of our size is not practical due to potential technical issues, many of which were exacerbated by the students. We recognize that the issues with the Hadoop virtual machine can be overcome using a more detailed step-by-step online guide. However, the configuration of the supercomputer prevented the virtual machines to fully utilize the physical network connection and limited the virtual network connection to roughly 1 MB/s. This eliminated the option of setting up virtual Hadoop clusters inside physical compute node in a manner similar to \cite{brown:2009}. Financial investment in a cloud-based approach was not justified given the capabilities of the on-site supercomputer that was already available for students' use.
+%
+% \subsection{Version 2, Spring 2013}
+% The following semester, we maintained the five-lecture plan from the previous semester but revised the setup of the Hadoop computing platforms. We redesigned the lectures, the assignments, and the Hadoop setup to highlight two separate aspects of the Hadoop ecosystem: the programming API libraries to support developing MapReduce programs and the middle infrastructure to support automated large scale data management and parallel execution of MapReduce programs. The MapReduce lecture focuses on the first aspect. The corresponding assignment only required the students to use Hadoop/MapReduce API libraries to develop and test MapReduce code on the standard Linux command line interface without using a supporting HDFS/MapReduce infrastructure. More specifically, this assignment required students to develop a number of MapReduce programs to answer analytical questions on the Airline Traffic database (11GB in size) \cite{airtraffic}. With this assignment, we emphasized the fact that MapReduce was only a parallel programming technique that can take advantage of data-level parallelism through the underlying support of data locality due to Hadoop HDFS. The HDFS lecture, the second assignment, and the new Hadoop setup were designed to illustrate this support. Without a dedicated Hadoop cluster, we used the myHadoop scripts from the San Diego Supercomputing Center \cite{krishnan-tatineni-baru:2011} with some modifications. This allowed students to have their own Hadoop clusters running on the supercomputer without any additional administrative support. In the second assignment, the students were asked to package their MapReduce programs into \textit{jar} files and run them on their 8-node myHadoop clusters.
+%
+% The separation of the programming interface and the supporting infrastructure concepts proved to be effective. The serial/stand-alone setup of MapReduce libraries allowed students to minimize configuration time and to have more time to understand the MapReduce programming concepts. The first in-class lab showed the students how to download and set up the class path for the Hadoop MapReduce libraries. They were also shown how to write the MapReduce code in Java, compile the code, and package the code into a jar for testing purposes. To help with code writing, students also learned how to use X Windows on different platforms (Windows, Linux, and Mac) to access the Eclipse IDE on the supercomputer. At a larger scale, the utilization of myHadoop enabled the students to have access to their own Hadoop cluster on the supercomputer. The second in-class lab showed the students how to modify the myHadoop scripts so that the paths worked correctly with individual students' accounts. In this semester, all of the students completed both MapReduce assignments on time.
+%
+% There were a few glitches that remained. The Eclipse interface for Java MapReduce development suffered from connection problems due to high bandwidth requirements of visualization over the wireless network. A number of students did not like the burden of setting up a Java project inside Eclipse and preferred the straightforward command line editor for writing Java code. The utilization of myHadoop required intermediate Linux knowledge as well as knowledge about the layout of the supercomputer's storage in order to set up the HDFS data and MapReduce intermediate data directories properly. Among the errors that happened during the first time setting up the Hadoop cluster, the most common ones were incorrect paths to the Hadoop MapReduce installation directory, data nodes' local directory, and log directory. Another common issue was with ghost Hadoop daemons. If students exited from their reserved nodes without explicitly stopping Hadoop, the Hadoop daemons became orphaned while still bound to the ports for Hadoop communication. If these nodes were assigned to other students immediately afterward (before the scheduler could run a clean-up script), myHadoop scripts would not be able to start a new Hadoop cluster due to required ports being blocked off. If the orphaned daemons belonged to the same student, they could be terminated individually before a manual startup of the Hadoop cluster. Otherwise, the student would have to wait 15 minutes for the scheduler to clean up these daemons.
+%
+% In this semester, we also began to take feedback from the students through surveys to help to refine the Hadoop MapReduce module.
+%
+% \subsection{Version 3, Summer 2013}
+%
+% The distributed computing class was not offered during summer 2013. However, we packaged the module into a four-hour unit technical training session for undergraduate students participating in the Research Experience for Undergraduate program. Since less time was available, it was important that the existing technical issues from the previous semester were minimized. Within the allotted time, the two lectures on MapReduce and HDFS were compressed into two 45-minute segments. The remaining time was spent on teaching the students how to write Map Reduce programs and how to set up their Hadoop clusters on the supercomputer. All MapReduce programming steps were done on the command line terminal. Detailed steps provided in an accompanying tutorial. The myHadoop scripts were provided so that very few modifications from the students were needed. For the lab, the boot camp session covered two examples. The first was the Hadoop Word Count example, and the second was the calculation of average delay time for each airline from the Airline Traffic data.
+%
+% The feedback comments were very useful. The students expressed positive sentiments about examples and the usefulness of a detailed tutorial handout while emphasizing the need for an easier Hadoop setup, more details included on the handout, and a slower lecturing pace. It should be noted that the students participating in the REU program were top quality students with recommendations from their home institutions' faculty. With the information from this feedback, we doubled the number of lab hours in the full semester module and also incorporated more details in the lecture notes and the lab tutorials.
+%
+% \subsection{Version 4, Fall 2013}
+%
+% By Fall 2013, the environments and tools for the Hadoop module had reached a mature state with minimal effort needed from students to get their Hadoop cluster up and running. The students were required to follow an exact directory structure when saving Hadoop MapReduce libraries and the myHadoop scripts and were provided with scripts to automatically compile and package their MapReduce codes into jar files. The number of class hours spent on Hadoop MapReduce was also increased from five to seven lectures. Based on the feedback from the previous offerings of the course, we maintained two lectures for MapReduce and HDFS but doubled the number of hands-on labs. We also spent one lecture introducing HBase/Hive to the students to provide a more comprehensive view of the Hadoop ecosystem.
+%
+% In this semester we executed a survey evaluation of the course module. The survey provided the students with a number of detailed questions on the module. The survey first asked the students about their levels of proficiency on Java, Linux, networking concepts, and Hadoop MapReduce, before and after the Hadoop MapReduce module. Next, the survey asked the students to estimate the time they spent completing each assignment and setting up the Hadoop cluster and to evaluate the usefulness of the lecture slides and tutorials. The survey also asked the students about whether they thought the coverage was enough and at what level of undergraduate study Hadoop MapReduce should be introduced. Finally, the survey had a section for students' comments and feedback.
+%
+% Out of 39 students taking the class, 29 filled out and returned the survey forms. On proficiency level, besides the obvious improvements on Hadoop MapReduce, the students also recognized improvements in their Java, Linux, and networking proficiency, as shown in Table \ref{tab:proficiency}. This was not surprising because a comprehensive understanding on the Hadoop ecosystem requires one to understand the programming aspects of MapReduce, the architectural aspects of how HDFS' data blocks are set up and located on the Linux file system for data locality, and the networking aspects of how mappers and reducers communicate to process data blocks and shuffle intermediate data.
+%
+% \begin{table}
+% \caption{Level of Proficiency (0 to 10 with 10 being highest)}
+% \label{tab:proficiency}
+% \centering
+% \begin{tabular}{|l|c|c|}
+% \hline
+% Topic & Before & After \\
+% \hline
+% Java & 6.6$\pm$1.2 & 7.3$\pm$1.1 \\
+% \hline
+% Linux  & 5.86$\pm$1.7 & 7.1$\pm$1.7 \\
+% \hline
+% Networking & 4.38$\pm$1.6 & 6.29$\pm$1.5\\
+% \hline
+% Hadoop MapReduce & 0.03$\pm$0.2 & 4.53$\pm$1.16\\
+% \hline
+% \end{tabular}
+% \end{table}
+%
+% We asked the students to report the time it took to complete the assignments so as to gauge whether the workloads of the assignments are appropriate. The results are summarized in Table \ref{tab:time}. On average, the students spent close to four hours on the first assignment. The second assignment, despite being twice as long as the first assignment, also only took close to four hours to complete on average. These times were acceptable given that these were two-week and three-week long assignments, respectively. The time it took to set up the Hadoop cluster was also within the range of two hours or less. In fact, the majority of the students were able to set up their Hadoop cluster within the HDFS in-class lab.
+%
+% \begin{table}
+% \caption{Time to Complete (1: less than 30 minutes, 2: 30 minutes to 2 hours, 3: 2 hours to 4 hours, 4: more than 4 hours).}
+% \label{tab:time}
+% \centering
+% \begin{tabular}{|l|c|}
+% \hline
+% Activity & Time Taken \\
+% \hline
+% First Assignment  & 3.5$\pm$0.7 \\
+% \hline
+% Second Assignment & 3.1$\pm$0.9 \\
+% \hline
+% Set up Hadoop cluster & 2.5$\pm$1.1 \\
+% \hline
+% \end{tabular}
+% \end{table}
+%
+% We were satisfied with the level of usefulness of the lectures, in-class labs, and tutorials. It should be noted that the students favored the in-class labs over the lectures, as indicated in Table \ref{tab:helpfulness}. The survey shows that the current amount of materials and the number of lectures spent on Hadoop MapReduce were appropriate. One of the important statistics from the survey is the level of undergraduate study for which the students think the Hadoop MapReduce module is appropriate. Looking at Table \ref{tab:course-level}, we observe that while the majority of the students chose junior year or higher, more than 25\% of the responses still thought that this module could be taught at sophomore or freshman level. Given that most of the requests for assistance in this module come from working with HDFS and the supercomputer, we hypothesize that while the MapReduce programming aspects could be learned at a lower undergraduate level \cite{garrity:yates:brown:shoop:2011}, materials on HDFS require some fundamental understanding of the system-level aspects of cluster computing. Besides courses on distributed computing, this knowledge is typically picked up in operating systems, networking, or network programming courses, which are taught at the late sophomore or early junior level. We believe that the junior year or higher is the best time to teach Hadoop MapReduce.
+%
+% \begin{table}
+% \caption{Helpfulness of Lectures and Tutorials (1: not useful, 2: somewhat useful, 3: useful, 4: very useful).}
+% \label{tab:helpfulness}
+% \centering
+% \begin{tabular}{|l|c|}
+% \hline
+% Teaching Materials & Usefulness \\
+% \hline
+% Lecture & 3$\pm$0.9 \\
+% \hline
+% In-class lab & 3.6$\pm$0.7 \\
+% \hline
+% Hadoop cluster tutorial & 2.9$\pm$0.82 \\
+% \hline
+% \end{tabular}
+% \end{table}
+%
+% \begin{table}
+% \caption{Lowest level of CS course that Hadoop MapReduce should be introduced at Clemson University.}
+% \label{tab:course-level}
+% \centering
+% \begin{tabular}{|l|c|}
+% \hline
+% Year to teach Hadoop/MapReduce & Survey Counts \\
+% \hline
+% Senior & 7 \\
+% \hline
+% Junior & 14 \\
+% \hline
+% Sophomore & 6 \\
+% \hline
+% Freshman & 2 \\
+% \hline
+% \end{tabular}
+% \end{table}
+%
+% On the written feedback, all students expressed satisfaction about how the Hadoop MapReduce module was designed and taught. Comments to improve the module included requests for even more detailed tutorials and guidance along with explanations on the purpose of each command and more in-class labs for hand-on experience and discussion. Given that the students also thought that the amount of time on the module was appropriate, this suggests that they want to be able to better understand what has been taught, and not to be taught more materials.
